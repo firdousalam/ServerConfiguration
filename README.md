@@ -79,10 +79,14 @@ ufw allow "Nginx Full"
 # First Page
 
 # Delete the default server configuration
- rm /etc/nginx/sites-available/default
- rm /etc/nginx/sites-enabled/default
 
-First configuration
+ rm /etc/nginx/sites-available/default
+ 
+ rm /etc/nginx/sites-enabled/default
+ 
+
+# First configuration
+
  nano /etc/nginx/sites-available/netflix
 server {
   listen 80;
