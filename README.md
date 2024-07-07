@@ -87,12 +87,12 @@ ufw allow "Nginx Full"
 
 # First configuration
 
- nano /etc/nginx/sites-available/netflix
+ nano /etc/nginx/sites-available/damansara
 server {
   listen 80;
 
   location / {
-        root /var/www/netflix;
+        root /var/www/damansara;
         index  index.html index.htm;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
@@ -103,20 +103,28 @@ server {
   }
 }
 
-ln -s /etc/nginx/sites-available/netflix /etc/nginx/sites-enabled/netflix
+ln -s /etc/nginx/sites-available/damansara /etc/nginx/sites-enabled/damansara
 
-Write your fist message
-nano /var/www/netflix/index.html
+# Write your fist message
+nano /var/www/damansara/index.html
 
-Start Nginx and check the page
+# Start Nginx and check the page
+
 systemctl start nginx
-Uploading Apps Using Git
+
+# Uploading Apps Using Git
+
 apt install git
-mkdir netflix
-cd netflix
+
+mkdir damansara
+
+cd damansara
+
 git clone <your repository>
-Nginx Configuration for new apps
-nano /etc/nginx/sites-available/netflix
+
+# Nginx Configuration for new apps
+nano /etc/nginx/sites-available/damansara
+
 location /api {
         proxy_pass http://45.90.108.107:8800;
         proxy_http_version 1.1;
@@ -125,6 +133,7 @@ location /api {
         proxy_set_header Host $host;
         proxy_cache_bypass $http_upgrade;
   }
+  
 If you check the location /api you are going to get "502" error which is good. Our configuration works. The only thing we need to is running our app
 apt install nodejs
 apt install npm
