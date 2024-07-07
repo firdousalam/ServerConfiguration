@@ -88,6 +88,8 @@ ufw allow "Nginx Full"
 # First configuration
 
  nano /etc/nginx/sites-available/damansara
+
+ 
 server {
   listen 80;
 
