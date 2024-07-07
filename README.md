@@ -123,7 +123,9 @@ cd damansara
 git clone <your repository>
 
 # Nginx Configuration for new apps
+
 nano /etc/nginx/sites-available/damansara
+
 
 location /api {
         proxy_pass http://45.90.108.107:8800;
@@ -133,8 +135,10 @@ location /api {
         proxy_set_header Host $host;
         proxy_cache_bypass $http_upgrade;
   }
+
   
 If you check the location /api you are going to get "502" error which is good. Our configuration works. The only thing we need to is running our app
+
 apt install nodejs
 apt install npm
 cd api
