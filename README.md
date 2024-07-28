@@ -34,18 +34,23 @@ Copy your public SSH Key to your clipboard using the following code: pbcopy < ~/
 # For Windows
 Download PuTTY and PuTTYgen.
 Open up PuTTYgen and click the Generate.
+
 Copy your key.
 Enter a key passphrase and confirm.
+
 Save the private key.
 # Connection
 After copying the SSH Key go the to hosting service provider dashboard and paste your key and save. After,
 
 For MAC OS / Linux
 ssh root@<server ip address> 
+
 For Windows
 Open the PuTTY app.
+
 Enter your IP address.
 Open the following section: Connection - SSH - Auth
+
 Browse the folders and choose your private key.
 
 
@@ -91,13 +96,19 @@ ufw allow "Nginx Full"
 sudo nano /etc/nginx/sites-available/damansarachiropractic.com
 
 # update your configuration to point your new Location 
+
+
 server {
     listen 80;
     server_name damansarachiropractic.com
- www.damansarachiropractic.com
-;
+ www.damansarachiropractic.com;
+
+
     root /var/www/damansarachiropractic.com/html;
+
     index index.html index.htm index.nginx-debian.html;
+
+
     location / {
         try_files $uri $uri/ =404;
     }
