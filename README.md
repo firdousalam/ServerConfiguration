@@ -87,32 +87,47 @@ ufw allow "Nginx Full"
 
 # First configuration
 
- nano /etc/nginx/sites-available/damansara
+# create new folder
+sudo nano /etc/nginx/sites-available/damansarachiropractic.com
 
- 
+# update your configuration to point your new Location 
 server {
-  listen 80;
-
-  location / {
-        root /var/www/damansara;
-        index  index.html index.htm;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
-        try_files $uri $uri/ /index.html;
-  }
+    listen 80;
+    server_name damansarachiropractic.com
+ www.damansarachiropractic.com
+;
+    root /var/www/damansarachiropractic.com/html;
+    index index.html index.htm index.nginx-debian.html;
+    location / {
+        try_files $uri $uri/ =404;
+    }
 }
 
-ln -s /etc/nginx/sites-available/damansara /etc/nginx/sites-enabled/damansara
+# create HTML Directory
 
-# Write your fist message
-nano /var/www/damansara/index.html
+sudo mkdir -p /var/www/damansarachiropractic.com/html
 
-# Start Nginx and check the page
+# Add permission to Directory
+sudo chown -R $USER:$USER /var/www/damansarachiropractic.com/html
 
-systemctl start nginx
+sudo chmod -R 755 /var/www
+
+# create new File 
+echo "Hello from NGINX on my Youtube Channel TechnophileFirdous! we had learn to create our own Page in Nginx server" | sudo tee /var/www/damansarachiropractic.com/html/index.html
+
+# Create a symbolic link to your domain’s configuration file in the sites-enabled directory:
+
+sudo ln -sf /etc/nginx/sites-available/damansarachiropractic.com /etc/nginx/sites-enabled//damansarachiropractic.com
+
+# test your configuration
+
+sudo nginx -t
+
+# restart your nginx server
+
+sudo systemctl restart nginx
+
+
 
 # Uploading Apps Using Git
 
