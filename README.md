@@ -564,6 +564,7 @@ server {
 }
 Once you are done adding the location blocks for your applications, save the file and exit your editor.
 
+sudo ln -s /etc/nginx/sites-available/example.com /etc/nginx/sites-enabled/
 
 Make sure you didn’t introduce any syntax errors by typing:
 
