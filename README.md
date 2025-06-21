@@ -575,6 +575,106 @@ Restart Nginx:
 sudo systemctl restart nginx
 Assuming that your Node.js application is running, and your application and Nginx configurations are correct, you should now be able to access your application via the Nginx reverse proxy. Try it out by accessing your server’s URL (its public IP address or domain name).
 
+Now it’s time to start both our Node.js application and the Nginx service to trigger the recent changes. But first, let’s check the status of Nginx to confirm that the configuration is working properly:
+
+sudo nginx -t 
+The output upon running the above command would look like this:
+
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+The above output confirms that our configuration was successful. Next, restart Nginx to enable your changes:
+
+sudo systemctl restart nginx
+With Nginx running again, let’s allow full access through the Nginx firewall:
+
+sudo ufw allow 'Nginx Full'
+Next, navigate to the directory of the Node.js application:
+
+cd ~/nginx_server_project
+Start your Node.js server application using the following command:
+
+node server.js
+Node.js Server Running And Listening For A Request
+
+Open your browser and access the Node.js application using your-domain.com:
+
+Accessing The Node.js Application
+
+Now we can navigate to the address your-domain.com/overview on the browser and access the /overview endpoint of our application:
+
+Accessing The /Overview Endpoint
+
+To further test if every other path we defined is working, let’s try the last path, your-domain.com/api:
+
+Accessing The /api Endpointq
+
+Advanced Nginx configuration options
+Node.js has become popular for creating online applications that are fast and scalable. However, it is essential to optimize the web server infrastructure to take advantage of its possibilities. This section will explore how to optimize the scalability and security of Node.js apps by covering advanced Nginx configuration options including SSL termination, load balancing, and more.
+
+SSL termination with Nginx
+It is essential to secure communication between clients and the Node.js server, and SSL/TLS encryption is a key component in making this happen. Nginx performs well when it comes to SSL termination.
+
+
+By terminating HTTPS traffic from clients, Nginx relieves the computational burden of SSL/TLS encryption on your upstream web and application servers:
+
+server {
+    listen 443 ssl;
+    server_name example.com;
+
+    ssl_certificate /path/to/ssl_certificate.crt;
+    ssl_certificate_key /path/to/ssl_certificate.key;
+
+    # SSL settings
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_prefer_server_ciphers on;
+    ssl_ciphers 'EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH';
+    ssl_session_cache shared:SSL:10m;
+    ssl_session_timeout 10m;
+
+    location / {
+        proxy_pass http://node_app_servers;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+The configuration file above:
+
+Sets up Nginx to listen on port 443 for SSL connections
+Specifies the SSL certificate and key paths for SSL termination
+Configures SSL protocols and ciphers to ensure secure communication
+Uses the proxy_pass directive to forward incoming requests to the backend Node.js servers
+Load balancing with Nginx
+As Node.js applications develop in size to accommodate an increasing number of users, it becomes important to allocate incoming traffic among several backend servers to guarantee efficiency and dependability.
+
+Nginx provides a variety of algorithms to help with load balancing. These algorithms determine how loads are distributed among the available servers:
+
+http {
+  upstream node_app_servers {
+      # no load balancing method is specified for Round Robin
+      server api1.backend.com;
+      server api2.backend.com;
+  }
+
+  server {
+      listen 80;
+      server_name example.com;
+
+      location / {
+          proxy_pass http://node_app_servers;
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+      }
+  }
+}
+The upstream directive defines a group of backend Node.js servers for load balancing
+Nginx distributes incoming requests among the specified servers using a default round-robin algorithm
+The proxy_pass directive forwards requests to the backend servers within the upstream group
+
+
 
 Conclusion
 Congratulations! You now have your Node.js application running behind an Nginx reverse proxy on an Ubuntu 20.04 server. This reverse proxy setup is flexible enough to provide your users access to other applications or static web content that you want to share.
