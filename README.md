@@ -48,10 +48,12 @@ ssh root@<server ip address>
 For Windows
 Open the PuTTY app.
 
-Enter your IP address.
-Open the following section: Connection - SSH - Auth
+After installing it, follow these steps to connect to your server:
 
-Browse the folders and choose your private key.
+Launch PuTTY.
+Copy your server IP address and SSH port from hPanel. The default SSH port value is 22.
+Paste them into the respective fields. Click Open to proceed.
+Enter your VPS root username and password. For security reasons, the password won’t show when you type it.
 
 
 # First Configuration
