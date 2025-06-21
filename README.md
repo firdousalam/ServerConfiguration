@@ -304,8 +304,24 @@ Method 2: Using Nginx as a Reverse Proxy
 Install NestJS CLI and Create Project
 
 npm i -g @nestjs/cli
+
 nest new <project-name>
+
 cd <project-name>
+##  install git 
+
+ sudo apt update
+## Install dependencies:
+
+sudo apt install libcurl4-gnutls-dev libexpat1-dev gettext libz-dev libssl-
+
+## login you git
+
+## git login
+git login
+
+// git clone gitURL
+
 npm install
 npm run build
 Install PM2 and Start Application
