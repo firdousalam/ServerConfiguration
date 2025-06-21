@@ -268,3 +268,74 @@ certbot --nginx -d example.com -d www.example.com
 Let’s Encrypt’s certificates are only valid for ninety days. To set a timer to validate automatically:
 
 systemctl status certbot.timer
+
+
+## for running nestjs application
+
+Method 1: Using PM2
+
+Install NestJS CLI
+
+sudo npm i -g @nestjs/cli
+Install PM2
+
+sudo npm install pm2@latest -g
+Clone Code Repository
+
+git clone http://coderepo.com/projectname.git
+cd projectname
+npm install
+Build Project
+
+npm run build
+Run Project with PM2
+
+pm2 start dist/main.js --name <application_name>
+pm2 startup systemd
+pm2 save
+This method ensures your application runs continuously and restarts automatically after system reboots
+1
+.
+
+Method 2: Using Nginx as a Reverse Proxy
+
+Install NestJS CLI and Create Project
+
+npm i -g @nestjs/cli
+nest new <project-name>
+cd <project-name>
+npm install
+npm run build
+Install PM2 and Start Application
+
+npm install -g pm2
+pm2 start dist/main.js --name <application_name>
+pm2 startup systemd
+pm2 save
+Install Nginx and Configure Reverse Proxy
+
+sudo apt install nginx
+sudo nano /etc/nginx/sites-available/<your_domain>
+Add the following configuration:
+
+server {
+server_name your_domain www.your_domain;
+location / {
+proxy_pass http://localhost:3000;
+proxy_http_version 1.1;
+proxy_set_header Upgrade $http_upgrade;
+proxy_set_header Connection 'upgrade';
+proxy_set_header Host $host;
+proxy_cache_bypass $http_upgrade;
+}
+}
+Create a symlink and restart Nginx:
+
+sudo ln -s /etc/nginx/sites-available/<your_domain> /etc/nginx/sites-enabled/
+sudo unlink /etc/nginx/sites-enabled/default
+sudo systemctl restart nginx
+Add SSL Using Let’s Encrypt (Optional)
+
+sudo apt install certbot python3-certbot-nginx
+sudo certbot --nginx -d <your_domain> -d <www.your_domain>
+This method provides an additional layer of security by using Nginx as a reverse proxy and adding SSL
