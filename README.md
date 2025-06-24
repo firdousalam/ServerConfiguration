@@ -672,9 +672,49 @@ http {
 }
 The upstream directive defines a group of backend Node.js servers for load balancing
 Nginx distributes incoming requests among the specified servers using a default round-robin algorithm
-The proxy_pass directive forwards requests to the backend servers within the upstream group
+#The proxy_pass directive forwards requests to the backend servers within the upstream group
 
+# Here is an example of an nginx configuration file that sets up a reverse proxy for a Node.js application under the /api path:
 
+# 🔧 Sample Nginx Config (node-api.conf or inside nginx.conf)
+
+server {
+    listen 80;
+    server_name yourdomain.com;
+
+    location /api/ {
+        proxy_pass http://localhost:3000/;  # Assuming Node.js is running on port 3000
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+
+        # Optionally remove the /api prefix before sending to Node.js
+        rewrite ^/api/?(.*)$ /$1 break;
+    }
+
+    # Optional: Serve static frontend from a directory
+    location / {
+        root /var/www/html;
+        index index.html;
+    }
+}
+# 📌 Explanation
+location /api/ matches any URL starting with /api/.
+
+rewrite ^/api/?(.*)$ /$1 break; removes the /api prefix so your Node.js routes can remain clean (e.g., /users instead of /api/users).
+
+proxy_pass http://localhost:3000/; proxies the request to your local Node.js server.
+
+# ✅ Make sure to:
+Update yourdomain.com to your actual domain or IP.
+
+# Restart Nginx after saving config:
+
+sudo nginx -t     # Test config
+
+sudo systemctl reload nginx
 
 Conclusion
 Congratulations! You now have your Node.js application running behind an Nginx reverse proxy on an Ubuntu 20.04 server. This reverse proxy setup is flexible enough to provide your users access to other applications or static web content that you want to share.
