@@ -1168,3 +1168,10 @@ This page may indicate Jenkins is almost ready! instead and if so, click Restart
 If the page does not automatically refresh after a minute, use your web browser to refresh the page manually.
 
 If required, log in to Jenkins with the credentials of the user you just created and you are ready to start using Jenkins!
+
+
+
+# step to setup CD Pipeline using jenkins
+
+# to give permission
+ sudo chown -R jenkins:jenkins /var/www/html/API
